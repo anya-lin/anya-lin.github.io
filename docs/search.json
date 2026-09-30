@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site"
+    "text": "About this site\nThis is the best website."
   },
   {
     "objectID": "index.html",
@@ -19,5 +19,12 @@
     "title": "Anya Lin",
     "section": "",
     "text": "Hi, I’m Anya! I am a junior at Pomona College studying math and economics."
+  },
+  {
+    "objectID": "tidy1.html",
+    "href": "tidy1.html",
+    "title": "TidyTuesday First Analysis",
+    "section": "",
+    "text": "Hello"
   }
 ]

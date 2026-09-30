@@ -1,5 +1,15 @@
 ---
 title: "About"
+format:
+  html:
+    theme:
+      - minty
+      - brand
+    css: styles.css
+    toc: true
+    page-layout: full
 ---
 
 About this site
+
+This is the best website.
