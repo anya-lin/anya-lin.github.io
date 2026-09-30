@@ -5,4 +5,34 @@ toc: false
 
 ---
 
-Hello
+```{r}
+library(tidyverse)
+
+yarn <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2022/2022-10-11/yarn.csv')
+
+```
+
+
+```{r}
+ggplot(yarn, aes(x = wpi)) +
+  geom_histogram() +
+  labs(
+    x = "Wraps per Inch",
+    y = "Count",
+    title = "Wraps per Inch of a Type of Yarn"
+  )
+
+```
+
+
+
+```{r}
+ggplot(yarn, aes(x = discontinued, fill = machine_washable)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Are discontinued yarns less likely to be machine washable?",
+    x = "Discontinued?",
+    y = "Proportion machine washable",
+    fill = "Machine Washable?"
+  )
+```
