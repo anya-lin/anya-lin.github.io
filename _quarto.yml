@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "anya-lin.github.io"
+  title: "Anya Lin"
   navbar:
     left:
       - href: index.qmd
@@ -13,10 +13,11 @@ website:
 format:
   html:
     theme:
-      - cosmo
+      - minty
       - brand
     css: styles.css
     toc: true
+    page-layout: full
 
 
 

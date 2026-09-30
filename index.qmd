@@ -1,7 +1,22 @@
 ---
-title: "anya-lin.github.io"
+title: "Anya"
+image: banner.jpg
+toc: false
+about: 
+    template: jolla
+    image-shape: rectangle
+    image-width: 22em
+    links:
+        - icon: envelope
+          text: Email
+          href: mailto:ahli2024@mymail.pomona.edu
+        - icon: github
+          text: Website Code
+          href: https://github.com/anya-lin/anya-lin.github.io
+
+---
+she/her
+
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Hi, I'm Anya! I am a third-year student at Pomona College studying math and economics.
