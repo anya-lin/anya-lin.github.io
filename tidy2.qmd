@@ -1,0 +1,34 @@
+---
+title: "TidyTuesday Second Analysis"
+toc: false
+
+
+---
+
+```{r}
+library(tidyverse)
+
+taylor_album_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-10-17/taylor_album_songs.csv')
+taylor_all_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-10-17/taylor_all_songs.csv')
+taylor_albums <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-10-17/taylor_albums.csv')
+
+
+```
+
+
+
+```{r}
+danceable_songs <- taylor_album_songs |>
+    #filter(album_name != "Midnights") |>
+        group_by(album_name) |>
+            summarize(album_danceability = mean(danceability, na.rm = TRUE))
+            
+
+
+ggplot(danceable_songs, aes(x = fct_rev(fct_relevel(album_name, "Taylor Swift", "Fearless (Taylor's Version)", "Speak Now", "Red (Taylor's Version)", "1989", "reputation" , "Lover" , "folklore" , "evermore", "Midnights")), y = album_danceability, fill = album_name)) +
+    geom_col() +   
+    coord_flip() + 
+    scale_fill_manual(values = c("Taylor Swift" = "#52d1ab", "Fearless (Taylor's Version)" = "#b39e2d", "Speak Now" = "#935dd9", "Red (Taylor's Version)" = "#7d282b", "1989" = "#73b4c9", "reputation" = "#1a241c" , "Lover" = "#e3a6dd", "folklore" = "#b6bfbf", "evermore" = "#4d3323", "Midnights" = "#1d276e")) + 
+    labs(title = "Mean Danceability of Songs in Taylor Swift Albums", x = "Album", y = "Album Danceability") +
+    theme(legend.position = "none") 
+```
