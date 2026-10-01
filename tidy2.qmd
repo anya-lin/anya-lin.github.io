@@ -1,10 +1,20 @@
 ---
-title: "TidyTuesday Second Analysis"
+title: "Taylor Swift Songs"
 toc: false
+author: Anya Lin
 
+execute:
+  warning: false
+  message: false
+
+format:
+  html:
+    code-fold: true
+    code-summary: "R Code"
 
 ---
 
+*Second TidyTuesday Analysis*
 ```{r}
 library(tidyverse)
 

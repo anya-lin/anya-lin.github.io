@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>TidyTuesday First Analysis – Anya Lin</title>
+<title>Golem Grad Tortoises – Anya Lin</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -145,7 +145,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu" aria-labelledby="nav-menu-data-viz">    
         <li>
     <a class="dropdown-item" href="./tidy1.html">
- <span class="dropdown-text">TidyTuesday First Analysis</span></a>
+ <span class="dropdown-text">Golem Grad Tortoises</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./tidy2.html">
@@ -170,7 +170,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">TidyTuesday First Analysis</h1>
+<h1 class="title">Golem Grad Tortoises</h1>
+<p class="subtitle lead">First TidyTuesday Analysis</p>
 </div>
 
 
@@ -188,53 +189,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.2.1     ✔ readr     2.1.6
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ ggplot2   4.0.3     ✔ tibble    3.3.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.2
-✔ purrr     1.2.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<details class="code-fold">
+<summary>R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>clutch_size_cleaned <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-03-03/clutch_size_cleaned.csv'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>tortoise_body_condition_cleaned <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-03-03/tortoise_body_condition_cleaned.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>yarn <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2022/2022-10-11/yarn.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: One or more parsing issues, call `problems()` on your data frame for details,
-e.g.:
-  dat &lt;- vroom(...)
-  problems(dat)</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 100000 Columns: 24
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr  (8): name, permalink, texture, yarn_company_name, yarn_weight_knit_gaug...
-dbl (13): gauge_divisor, grams, id, max_gauge, min_gauge, rating_average, ra...
-lgl  (3): discontinued, machine_washable, yarn_weight_crochet_gauge
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-</div>
+<p>This data was taken from <a href="https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-03-03/readme.md">TidyTuesday’s 2026-03-03 project</a>, which was curated by <a href="https://github.com/novica">Novica Nakov, Free Software Macedonia</a>. The data was originally collected by Dragan Arsovski, Xavier Bonnet, Ana Golubović, and Ljiljana Tomović, who presented it in their paper: <a href="https://onlinelibrary.wiley.com/doi/10.1111/ele.70296">Sex Ratio Bias Triggers Demographic Suicide in a Dense Tortoise Population</a>.</p>
+<p><strong>Background</strong></p>
+<p>Over the generations, people have worked hard to build a society that grants men and women the same respect and opportunities, to varying levels of success. This issue transcends species, as the female tortoises in Lake Prespa in North Macedonia struggle with similar societal concerns. Unable to make their communities recognize them for their own accomplishments, a female tortoise is often reduced to just “Hermann.”</p>
+<p>To paraphrase from the article and introduction on TidyTuesday: On an especially population-dense island in North Macedonia’s Lake Prespa, male Hermann’s tortoises vastly outnumber female Hermann’s tortoises. The sexually coercive males injure the female tortoises, and put them at risk of fatal falls. These harassed females are emaciated, tend to produce smaller clutches, and have lower annual survival rates than neighbouring mainland populations.</p>
+<p>Data about the tortoises were taken from two locations on Golem Grad Island: the beach and the plateau. Data was also collected on the nearby mainland population of Hermann’s tortoises in Konjsko as a control.</p>
+<p><strong>Masses of Tortoises</strong></p>
+<p>The following plot shows the spread of masses of female vs male tortoises in the three different locations. From this plot, it is clear that the female tortoises in Konjsko tend to be heavier than those on the beach and on the plateau of Golem Grad.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(yarn, <span class="fu">aes</span>(<span class="at">x =</span> wpi)) <span class="sc">+</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Wraps per Inch"</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count"</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Wraps per Inch of a Type of Yarn"</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 96199 rows containing non-finite outside the scale range
-(`stat_bin()`).</code></pre>
-</div>
+<details class="code-fold">
+<summary>R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tortoise_body_condition_cleaned, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> body_mass_grams, <span class="at">color =</span> sex)) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(locality)) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span><span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mass of Females vs Males At Different Localities"</span>, <span class="at">x =</span> <span class="st">"Sex and Locality"</span>, <span class="at">y =</span> <span class="st">"Body Mass (grams)"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -243,15 +218,14 @@ lgl  (3): discontinued, machine_washable, yarn_weight_crochet_gauge
 </div>
 </div>
 </div>
+<p><strong>Body Conditions of Tortoises</strong></p>
+<p>This plot shows the spread of the body condition index of the female and male tortoises in the three different locations. Body condition index refers to a tortoise’s mass scaled by its size. As stated by the original article, “Among the genus Testudo, the body condition of females is higher than that of males (Bonnet et al.&nbsp;2010)”. However, from this plot, this is only true for the control group in Konjsko. The female tortoises in Golem Grad have similar BCIs to the males.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(yarn, <span class="fu">aes</span>(<span class="at">x =</span> discontinued, <span class="at">fill =</span> machine_washable)) <span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Are discontinued yarns less likely to be machine washable?"</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Discontinued?"</span>,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Proportion machine washable"</span>,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Machine Washable?"</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<details class="code-fold">
+<summary>R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tortoise_body_condition_cleaned, <span class="fu">aes</span>(<span class="at">x =</span> sex, <span class="at">y =</span> body_condition_index, <span class="at">color =</span> sex)) <span class="sc">+</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(locality)) <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span><span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Body Condition of Females vs Males At Different Localities"</span>, <span class="at">x =</span> <span class="st">"Sex and Locality"</span>, <span class="at">y =</span> <span class="st">"Body Condition Index"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
