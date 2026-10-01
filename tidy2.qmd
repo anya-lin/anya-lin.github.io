@@ -1,7 +1,7 @@
 ---
 title: "Taylor Swift Songs"
 toc: false
-author: Anya Lin
+subtitle: "Second TidyTuesday Analysis"
 
 execute:
   warning: false
@@ -14,7 +14,6 @@ format:
 
 ---
 
-*Second TidyTuesday Analysis*
 ```{r}
 library(tidyverse)
 
@@ -22,23 +21,28 @@ taylor_album_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordat
 taylor_all_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-10-17/taylor_all_songs.csv')
 taylor_albums <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-10-17/taylor_albums.csv')
 
-
 ```
 
+This data was taken from [TidyTuesday's 2023-10-17 project](https://github.com/rfordatascience/tidytuesday/blob/main/data/2023/2023-10-17/readme.md), and originally came from  Genius and the Spotify API. 
 
+**Background**
+
+This dataset spans 17 years of Taylor Swift's music career, from when she first released her debut album in 2006 to the week that the Eras Tour film premiered in October 2023. Thus, this dataset excludes the albums released afterwards, like the Taylor's Versions of Speak Now and 1989, as well as the new albums, The Tortured Poets Department + The Anthology, and The Life of a Showgirl + The Encore (though this might be for the best, depending on who you talk to).
+
+**Danceability**
+
+Following the release of the "Shake It Off" music video in 2014, and again during The Eras Tour, Taylor Swift recieved mass amounts of online hate surrounding her dancing ability. Thus, it makes sense to track her songs' danceability.
+
+This boxplot shows the spread of Spotify Danceability Scores (1 being the most danceable and 0 being the least) for each of Taylor Swift's albums. The plot is ordered in chronological order with her first album at the top. This spread suggests that Lover has the greatest spread in terms of how danceable the songs on an album are, and that her pop albums (1989, reputation, Lover, and Midnights) tend to be more danceable than her country albums (Taylor Swift, Fearless, and Speak Now). 
 
 ```{r}
-danceable_songs <- taylor_album_songs |>
-    #filter(album_name != "Midnights") |>
-        group_by(album_name) |>
-            summarize(album_danceability = mean(danceability, na.rm = TRUE))
-            
+ggplot(taylor_album_songs, aes(x = fct_rev(fct_relevel(album_name, "Taylor Swift", "Fearless (Taylor's Version)", "Speak Now", "Red (Taylor's Version)", "1989", "reputation" , "Lover" , "folklore" , "evermore", "Midnights")), y = danceability, color = album_name)) +
+  geom_boxplot() + theme_minimal() +
+  scale_color_manual(values = c("Taylor Swift" = "#52d1ab", "Fearless (Taylor's Version)" = "#b39e2d", "Speak Now" = "#935dd9", "Red (Taylor's Version)" = "#7d282b", "1989" = "#73b4c9", "reputation" = "#1a241c" , "Lover" = "#e3a6dd", "folklore" = "#b6bfbf", "evermore" = "#4d3323", "Midnights" = "#1d276e")) +
+ theme(legend.position = "none") +
+ labs(title = "Danceability of Taylor Swift Songs", y = "Album", x = "Spotify Danceability Score (0-1)") + coord_flip()
+```
 
-
-ggplot(danceable_songs, aes(x = fct_rev(fct_relevel(album_name, "Taylor Swift", "Fearless (Taylor's Version)", "Speak Now", "Red (Taylor's Version)", "1989", "reputation" , "Lover" , "folklore" , "evermore", "Midnights")), y = album_danceability, fill = album_name)) +
-    geom_col() +   
-    coord_flip() + 
-    scale_fill_manual(values = c("Taylor Swift" = "#52d1ab", "Fearless (Taylor's Version)" = "#b39e2d", "Speak Now" = "#935dd9", "Red (Taylor's Version)" = "#7d282b", "1989" = "#73b4c9", "reputation" = "#1a241c" , "Lover" = "#e3a6dd", "folklore" = "#b6bfbf", "evermore" = "#4d3323", "Midnights" = "#1d276e")) + 
-    labs(title = "Mean Danceability of Songs in Taylor Swift Albums", x = "Album", y = "Album Danceability") +
-    theme(legend.position = "none") 
+```{r}
+print("You know how to ball, I know Aristotle.")
 ```

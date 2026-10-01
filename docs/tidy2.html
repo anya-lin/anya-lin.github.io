@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>TidyTuesday Second Analysis – Anya Lin</title>
+<title>Taylor Swift Songs – Anya Lin</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -145,11 +145,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu" aria-labelledby="nav-menu-data-viz">    
         <li>
     <a class="dropdown-item" href="./tidy1.html">
- <span class="dropdown-text">TidyTuesday First Analysis</span></a>
+ <span class="dropdown-text">Golem Grad Tortoises</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./tidy2.html">
- <span class="dropdown-text">TidyTuesday Second Analysis</span></a>
+ <span class="dropdown-text">Taylor Swift Songs</span></a>
   </li>  
     </ul>
   </li>
@@ -170,7 +170,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">TidyTuesday Second Analysis</h1>
+<h1 class="title">Taylor Swift Songs</h1>
+<p class="subtitle lead">Second TidyTuesday Analysis</p>
 </div>
 
 
@@ -189,7 +190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="cell">
 <details class="code-fold">
-<summary>Show the code</summary>
+<summary>R Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>taylor_album_songs <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-10-17/taylor_album_songs.csv'</span>)</span>
@@ -197,22 +198,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>taylor_albums <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2023/2023-10-17/taylor_albums.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p>This data was taken from <a href="https://github.com/rfordatascience/tidytuesday/blob/main/data/2023/2023-10-17/readme.md">TidyTuesday’s 2023-10-17 project</a>, and originally came from Genius and the Spotify API.</p>
+<p><strong>Background</strong></p>
+<p>This dataset spans 17 years of Taylor Swift’s music career, from when she first released her debut album in 2006 to the week that the Eras Tour film premiered in October 2023. Thus, this dataset excludes the albums released afterwards, like the Taylor’s Versions of Speak Now and 1989, as well as the new albums, The Tortured Poets Department + The Anthology, and The Life of a Showgirl + The Encore (though this might be for the best, depending on who you talk to).</p>
+<p><strong>Danceability</strong></p>
+<p>Following the release of the “Shake It Off” music video in 2014, and again during The Eras Tour, Taylor Swift recieved mass amounts of online hate surrounding her dancing ability. Thus, it makes sense to track her songs’ danceability.</p>
+<p>This boxplot shows the spread of Spotify Danceability Scores (1 being the most danceable and 0 being the least) for each of Taylor Swift’s albums. The plot is ordered in chronological order with her first album at the top. This spread suggests that Lover has the greatest spread in terms of how danceable the songs on an album are, and that her pop albums (1989, reputation, Lover, and Midnights) tend to be more danceable than her country albums (Taylor Swift, Fearless, and Speak Now).</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>danceable_songs <span class="ot">&lt;-</span> taylor_album_songs <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">#filter(album_name != "Midnights") |&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">group_by</span>(album_name) <span class="sc">|&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">summarize</span>(<span class="at">album_danceability =</span> <span class="fu">mean</span>(danceability, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(danceable_songs, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_rev</span>(<span class="fu">fct_relevel</span>(album_name, <span class="st">"Taylor Swift"</span>, <span class="st">"Fearless (Taylor's Version)"</span>, <span class="st">"Speak Now"</span>, <span class="st">"Red (Taylor's Version)"</span>, <span class="st">"1989"</span>, <span class="st">"reputation"</span> , <span class="st">"Lover"</span> , <span class="st">"folklore"</span> , <span class="st">"evermore"</span>, <span class="st">"Midnights"</span>)), <span class="at">y =</span> album_danceability, <span class="at">fill =</span> album_name)) <span class="sc">+</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span>   </span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Taylor Swift"</span> <span class="ot">=</span> <span class="st">"#52d1ab"</span>, <span class="st">"Fearless (Taylor's Version)"</span> <span class="ot">=</span> <span class="st">"#b39e2d"</span>, <span class="st">"Speak Now"</span> <span class="ot">=</span> <span class="st">"#935dd9"</span>, <span class="st">"Red (Taylor's Version)"</span> <span class="ot">=</span> <span class="st">"#7d282b"</span>, <span class="st">"1989"</span> <span class="ot">=</span> <span class="st">"#73b4c9"</span>, <span class="st">"reputation"</span> <span class="ot">=</span> <span class="st">"#1a241c"</span> , <span class="st">"Lover"</span> <span class="ot">=</span> <span class="st">"#e3a6dd"</span>, <span class="st">"folklore"</span> <span class="ot">=</span> <span class="st">"#b6bfbf"</span>, <span class="st">"evermore"</span> <span class="ot">=</span> <span class="st">"#4d3323"</span>, <span class="st">"Midnights"</span> <span class="ot">=</span> <span class="st">"#1d276e"</span>)) <span class="sc">+</span> </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mean Danceability of Songs in Taylor Swift Albums"</span>, <span class="at">x =</span> <span class="st">"Album"</span>, <span class="at">y =</span> <span class="st">"Album Danceability"</span>) <span class="sc">+</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<summary>R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(taylor_album_songs, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_rev</span>(<span class="fu">fct_relevel</span>(album_name, <span class="st">"Taylor Swift"</span>, <span class="st">"Fearless (Taylor's Version)"</span>, <span class="st">"Speak Now"</span>, <span class="st">"Red (Taylor's Version)"</span>, <span class="st">"1989"</span>, <span class="st">"reputation"</span> , <span class="st">"Lover"</span> , <span class="st">"folklore"</span> , <span class="st">"evermore"</span>, <span class="st">"Midnights"</span>)), <span class="at">y =</span> danceability, <span class="at">color =</span> album_name)) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Taylor Swift"</span> <span class="ot">=</span> <span class="st">"#52d1ab"</span>, <span class="st">"Fearless (Taylor's Version)"</span> <span class="ot">=</span> <span class="st">"#b39e2d"</span>, <span class="st">"Speak Now"</span> <span class="ot">=</span> <span class="st">"#935dd9"</span>, <span class="st">"Red (Taylor's Version)"</span> <span class="ot">=</span> <span class="st">"#7d282b"</span>, <span class="st">"1989"</span> <span class="ot">=</span> <span class="st">"#73b4c9"</span>, <span class="st">"reputation"</span> <span class="ot">=</span> <span class="st">"#1a241c"</span> , <span class="st">"Lover"</span> <span class="ot">=</span> <span class="st">"#e3a6dd"</span>, <span class="st">"folklore"</span> <span class="ot">=</span> <span class="st">"#b6bfbf"</span>, <span class="st">"evermore"</span> <span class="ot">=</span> <span class="st">"#4d3323"</span>, <span class="st">"Midnights"</span> <span class="ot">=</span> <span class="st">"#1d276e"</span>)) <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Danceability of Taylor Swift Songs"</span>, <span class="at">y =</span> <span class="st">"Album"</span>, <span class="at">x =</span> <span class="st">"Spotify Danceability Score (0-1)"</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -220,6 +219,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="tidy2_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"You know how to ball, I know Aristotle."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "You know how to ball, I know Aristotle."</code></pre>
 </div>
 </div>
 
