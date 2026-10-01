@@ -38,7 +38,7 @@ Data about the tortoises were taken from two locations on Golem Grad Island: the
 
 **Masses of Tortoises**
 
-The following plot shows the spread of masses of female vs male tortoises in the three different locations. From this plot, it is clear that the female tortoises in Konjsko tend to be heavier than those on the beach and on the plateau of Golem Grad.
+The following plot shows the spread of masses of female vs male tortoises in the three different locations. From this plot, it is clear that the female tortoises in Konjsko tend to be heavier than those on the beach and on the plateau of Golem Grad, though the males at the three locations are comparable in size.
 
 ```{r}
 ggplot(tortoise_body_condition_cleaned, aes(x = sex, y = body_mass_grams, color = sex)) +
