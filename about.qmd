@@ -58,8 +58,8 @@ car_bar_data_1 <- taylor_album_songs |>
 ```
 ```{r}
 car_bar_data <- taylor_album_songs |>
-  mutate(car = str_detect(lyrics, "\\bcar\\b")) |>
-  mutate(bar = str_detect(lyrics, "\\bbar\\b")) |>
+  mutate(car = str_detect(lyrics, "\\b[Cc]ars?\\b")) |>
+  mutate(bar = str_detect(lyrics, "\\b[Bb]ars?\\b")) |>
   mutate(car_bar =  car & bar) |>
   mutate(car_or_bar =  car | bar)
 ```
@@ -69,10 +69,10 @@ car_bar_data <- taylor_album_songs |>
 ggplot(filter(car_bar_data, bar), aes(x = fct_relevel(album_name, album_levels), fill = car_bar)) +
 geom_bar() +
 labs(
-title = "How many songs with bar also have car?",
+title = "How many songs with Bar also have Car?",
 x = "Album",
-y = "Number of songs with `car'",
-fill = "Song has Car?"
+y = "Number of Songs Mentioning Bars",
+fill = "Song Mentions Cars?"
 )+ coord_flip()
 ```
 
@@ -80,10 +80,10 @@ fill = "Song has Car?"
 ggplot(filter(car_bar_data, car), aes(x = fct_relevel(album_name, album_levels), fill = car_bar)) +
 geom_bar() +
 labs(
-title = "How many songs with car also have bar?",
+title = "How many songs with Car also have Bar?",
 x = "Album",
-y = "Number of songs with `bar'",
-fill = "Song has bar?"
+y = "Number of Songs Mentioning Cars",
+fill = "Song Mentions Bars?"
 )+ coord_flip()
 ```
 
@@ -92,23 +92,23 @@ fill = "Song has bar?"
 ggplot(car_bar_data, aes(x = fct_relevel(album_name, album_levels), fill = car_or_bar)) +
 geom_bar() +
 labs(
-title = "How many songs have car or bar?",
+title = "How Many Songs Mention Cars or Bars?",
 x = "Album",
-y = "Number of songs with `car' or `bar'",
-fill = "Song has car or bar?"
+y = "Number of Songs",
+fill = "Song has 'car' or 'bar'?"
 )+ coord_flip()
 ```
 
 ```{r}
 car_all_data <- car_bar_data |>
-  mutate(car_not_word = str_detect(lyrics, "car"))
+  mutate(car_not_word = str_detect(lyrics, "[Cc]ars?"))
 
 ggplot(filter(car_all_data, car_not_word), aes(x = fct_relevel(album_name, album_levels), fill = car)) +
 geom_bar() +
 labs(
-title = "How many songs with `car' have `car` as a full word",
+title = "How Many Songs with `Car' Mention Cars",
 x = "Album",
-y = "Number of songs with `car' as a full word",
-fill = "Car is a full word"
+y = "Number of Songs with 'C/car' or 'C/cars' in the Lyrics",
+fill = "Mentions Cars"
 )+ coord_flip()
 ```
