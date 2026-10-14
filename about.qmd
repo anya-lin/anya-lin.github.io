@@ -1,15 +1,114 @@
 ---
-title: "About"
+title: "Project 2"
 format:
   html:
+    code-fold: true
+    code-summary: "R Code"
     theme:
       - minty
       - brand
     css: styles.css
-    toc: true
+    toc: false
     page-layout: full
+
+
+execute:
+  warning: false
+  message: false
+
+
+
 ---
 
-About this site
+```{r}
+library(tidyverse)
+library(taylor)
 
-This is the best website.
+data(package = "taylor")
+data("taylor_album_songs")
+
+```
+
+This data was taken from [TidyTuesday's 2023-10-17 project](https://github.com/rfordatascience/tidytuesday/blob/main/data/2023/2023-10-17/readme.md), and originally came from [Genius](https://docs.genius.com/) and the [Spotify API](https://developer.spotify.com/documentation/web-api). 
+
+Continuing with my Data Visualization from Project 1, here, I will look at Taylor Swift song lyrics.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Taylor Swift gets a lot of hate for supposedly overusing "car" as a rhyme with "bar". I am very skeptical of this criticism, and so I will analyze how frequently she actually does this.
+
+```{r}
+car_bar_data_1 <- taylor_album_songs |>
+  mutate(car = str_detect(lyrics, "\\bcar\\b")) |>
+  mutate(bar = str_detect(lyrics, "\\bbar\\b")) |>
+  mutate(car_bar =  car & bar) |>
+  group_by(album_name) |>
+  summarize(car_percent = (sum(car))/n(), bar_percent = (sum(bar))/n(), car_bar_tot_perc = (sum(car_bar))/n(), bar_over_car_perc = (sum(car_bar))/sum(car), car_over_bar_perc = (sum(car_bar))/sum(bar))
+```
+```{r}
+car_bar_data <- taylor_album_songs |>
+  mutate(car = str_detect(lyrics, "\\bcar\\b")) |>
+  mutate(bar = str_detect(lyrics, "\\bbar\\b")) |>
+  mutate(car_bar =  car & bar) |>
+  mutate(car_or_bar =  car | bar)
+```
+
+
+```{r}
+ggplot(filter(car_bar_data, bar), aes(x = fct_relevel(album_name, album_levels), fill = car_bar)) +
+geom_bar() +
+labs(
+title = "How many songs with bar also have car?",
+x = "Album",
+y = "Number of songs with `car'",
+fill = "Song has Car?"
+)+ coord_flip()
+```
+
+```{r}
+ggplot(filter(car_bar_data, car), aes(x = fct_relevel(album_name, album_levels), fill = car_bar)) +
+geom_bar() +
+labs(
+title = "How many songs with car also have bar?",
+x = "Album",
+y = "Number of songs with `bar'",
+fill = "Song has bar?"
+)+ coord_flip()
+```
+
+
+```{r}
+ggplot(car_bar_data, aes(x = fct_relevel(album_name, album_levels), fill = car_or_bar)) +
+geom_bar() +
+labs(
+title = "How many songs have car or bar?",
+x = "Album",
+y = "Number of songs with `car' or `bar'",
+fill = "Song has car or bar?"
+)+ coord_flip()
+```
+
+```{r}
+car_all_data <- car_bar_data |>
+  mutate(car_not_word = str_detect(lyrics, "car"))
+
+ggplot(filter(car_all_data, car_not_word), aes(x = fct_relevel(album_name, album_levels), fill = car)) +
+geom_bar() +
+labs(
+title = "How many songs with `car' have `car` as a full word",
+x = "Album",
+y = "Number of songs with `car' as a full word",
+fill = "Car is a full word"
+)+ coord_flip()
+```
