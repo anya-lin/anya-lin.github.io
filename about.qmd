@@ -37,25 +37,9 @@ Continuing with my Data Visualization from Project 1, here, I will look at Taylo
 
 
 
-
-
-
-
-
-
-
-
-
 Taylor Swift gets a lot of hate for supposedly overusing "car" as a rhyme with "bar". I am very skeptical of this criticism, and so I will analyze how frequently she actually does this.
 
-```{r}
-car_bar_data_1 <- taylor_album_songs |>
-  mutate(car = str_detect(lyrics, "\\bcar\\b")) |>
-  mutate(bar = str_detect(lyrics, "\\bbar\\b")) |>
-  mutate(car_bar =  car & bar) |>
-  group_by(album_name) |>
-  summarize(car_percent = (sum(car))/n(), bar_percent = (sum(bar))/n(), car_bar_tot_perc = (sum(car_bar))/n(), bar_over_car_perc = (sum(car_bar))/sum(car), car_over_bar_perc = (sum(car_bar))/sum(bar))
-```
+
 ```{r}
 car_bar_data <- taylor_album_songs |>
   mutate(car = str_detect(lyrics, "\\b[Cc]ars?\\b")) |>
@@ -95,7 +79,7 @@ labs(
 title = "How Many Songs Mention Cars or Bars?",
 x = "Album",
 y = "Number of Songs",
-fill = "Song has 'car' or 'bar'?"
+fill = "Song Mentions Cars or Bars?"
 )+ coord_flip()
 ```
 
@@ -112,3 +96,56 @@ y = "Number of Songs with 'C/car' or 'C/cars' in the Lyrics",
 fill = "Mentions Cars"
 )+ coord_flip()
 ```
+
+
+```{r}
+how_many_cars_and_bars_data <- taylor_album_songs |>
+  mutate(how_many_car = str_count(lyrics, "\\b[Cc]ars?\\b")) |>
+  mutate(how_many_bar = str_count(lyrics, "\\b[Bb]ars?\\b")) |>
+  filter(how_many_car > 0 | how_many_bar > 0)
+
+#I took code from https://stackoverflow.com/a/58309991
+# Posted by Slouei
+# Retrieved 2026-10-14, License - CC BY-SA 4.0
+# To figure out how to make the legend
+
+ggplot(how_many_cars_and_bars_data) +
+  geom_point(aes(x = album_release, y = how_many_car, color = "Car"), position = position_jitter()) + geom_point(aes(x = album_release, y = how_many_bar, color = "Bar" ), position = position_jitter())  +
+labs(
+title = "How Many Times Did Songs Mentioning Cars and Bars Mention Cars and Bars?",
+x = "Song Release Date",
+y = "Number of Car or Bar Mentions in Song") 
+
+```
+
+```{r}
+
+#I had to look up the "unlist()" to make the list of lists into a list with objects
+# Source - https://www.r-bloggers.com/2023/08/the-unlist-function-in-r/
+all_ars_bad <- as.character(taylor_album_songs$lyrics) |> str_extract_all("\\b\\w+(?<!e)ars?\\b")
+
+all_ars <- all_ars_bad |> unlist()
+
+# I also had to look up a function that would make the list into a data frame
+#source - https://www.geeksforgeeks.org/r-language/how-to-convert-a-list-to-a-dataframe-in-r/
+
+all_ars_data <- as.data.frame(list(raw_words = all_ars)) |>
+  mutate(lowercase_ars = str_to_lower(raw_words)) |>
+  mutate(all_singular_ars = ifelse(str_detect(lowercase_ars, "s\\b"),str_sub(lowercase_ars, 1, str_length(lowercase_ars)-1), lowercase_ars)) |>
+  group_by(all_singular_ars)|>
+  summarize(ar_counts = n())
+
+
+
+
+ggplot(all_ars_data, aes(x = fct_reorder(all_singular_ars, ar_counts), y = ar_counts)) +
+geom_col(fill = "#2aaaa2") +
+labs(
+title = "Number of Times Words Rhyming with Car are Mentioned",
+x = "Lyric",
+y = "Number of Mentions",
+fill = "Song Mentions Cars?"
+)+ coord_flip()
+```
+
+Combinatorialists rejoice! Taylor Swift is clearly a fan of stars and bars.
