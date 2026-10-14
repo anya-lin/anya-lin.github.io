@@ -53,22 +53,22 @@ car_bar_data <- taylor_album_songs |>
 ggplot(filter(car_bar_data, bar), aes(x = fct_relevel(album_name, album_levels), fill = car_bar)) +
 geom_bar() +
 labs(
-title = "How many songs with Bar also have Car?",
+title = "How Many Songs Mentioning Bars Mention Cars?",
 x = "Album",
 y = "Number of Songs Mentioning Bars",
 fill = "Song Mentions Cars?"
-)+ coord_flip()
+)+ coord_flip() + theme_minimal()
 ```
 
 ```{r}
 ggplot(filter(car_bar_data, car), aes(x = fct_relevel(album_name, album_levels), fill = car_bar)) +
 geom_bar() +
 labs(
-title = "How many songs with Car also have Bar?",
+title = "How Many Songs Mentioning Cars also Mention Bars?",
 x = "Album",
 y = "Number of Songs Mentioning Cars",
 fill = "Song Mentions Bars?"
-)+ coord_flip()
+)+ coord_flip() + theme_minimal()
 ```
 
 
@@ -80,7 +80,7 @@ title = "How Many Songs Mention Cars or Bars?",
 x = "Album",
 y = "Number of Songs",
 fill = "Song Mentions Cars or Bars?"
-)+ coord_flip()
+)+ coord_flip() + theme_minimal()
 ```
 
 ```{r}
@@ -94,8 +94,23 @@ title = "How Many Songs with `Car' Mention Cars",
 x = "Album",
 y = "Number of Songs with 'C/car' or 'C/cars' in the Lyrics",
 fill = "Mentions Cars"
-)+ coord_flip()
+)+ coord_flip() + theme_minimal()
 ```
+
+
+
+```{r}
+longer_car_bar_data <- car_bar_data |>
+  pivot_longer(cols = c(danceability, loudness, acousticness, instrumentalness, valence),  names_to = "what_var" , values_to = "what_val")
+
+longer_car_bar_data |>
+ggplot(aes(x = what_var, y = what_val, color = car_bar)) +
+  geom_boxplot() + theme_minimal() +
+  labs(title = "Scores of Songs Rhyming Car with Bar Vs Without", 
+  x = "Type of Score", y = "Score (0-1)", color = "Song Rhymes Car with Bar") + coord_flip()
+```
+
+
 
 
 ```{r}
@@ -115,7 +130,6 @@ labs(
 title = "How Many Times Did Songs Mentioning Cars and Bars Mention Cars and Bars?",
 x = "Song Release Date",
 y = "Number of Car or Bar Mentions in Song") 
-
 ```
 
 ```{r}
@@ -143,9 +157,10 @@ geom_col(fill = "#2aaaa2") +
 labs(
 title = "Number of Times Words Rhyming with Car are Mentioned",
 x = "Lyric",
-y = "Number of Mentions",
-fill = "Song Mentions Cars?"
-)+ coord_flip()
+y = "Number of Mentions"
+) + coord_flip()
 ```
 
 Combinatorialists rejoice! Taylor Swift is clearly a fan of stars and bars.
+
+
