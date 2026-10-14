@@ -48,17 +48,30 @@ car_bar_data <- taylor_album_songs |>
   mutate(car_or_bar =  car | bar)
 ```
 
+First, we will determine how frequently Taylor Swift rhymes car with bar per album.
 
 ```{r}
-ggplot(filter(car_bar_data, bar), aes(x = fct_relevel(album_name, album_levels), fill = car_bar)) +
+ggplot(car_bar_data, aes(x = fct_relevel(album_name, album_levels), fill = car_bar)) +
 geom_bar() +
 labs(
-title = "How Many Songs Mentioning Bars Mention Cars?",
+title = "How Many Songs Rhyme Car with Bar?",
 x = "Album",
-y = "Number of Songs Mentioning Bars",
-fill = "Song Mentions Cars?"
+y = "Number of Songs Per Album",
+fill = "Song Rhymes Car with Bar?"
 )+ coord_flip() + theme_minimal()
+
+group_by(car_bar_data, album_name) |> 
+  summarize(Percent = 100*sum(car_bar)/n())
 ```
+
+
+This graph and table suggest that in the vast majority of her songs, Taylor Swift actually does not rhyme car with bar. In fact, even in her album Lover, which has the most instances of songs where Taylor rhymes car with bar, only 11.1 percent of the songs contain a car-bar rhyme. This seems to be enough evidence to dispute the claim that Taylor Swift is constantly rhyming car with bar
+
+
+However, one might still be interested in how frequently bar and car are used as lyrics if they are not being rhymed with each other. The following plots show the number of songs that mentioned either cars or bars in each album, and for each plot, it shows how manyof those songs used car or bar as a rhyme for the word we are examining.
+
+This first plot ony considers songs where Taylor Swift mentions cars, and the bars are filled in to show how many of these songs use car as a rhyme for bar.
+
 
 ```{r}
 ggplot(filter(car_bar_data, car), aes(x = fct_relevel(album_name, album_levels), fill = car_bar)) +
@@ -71,33 +84,32 @@ fill = "Song Mentions Bars?"
 )+ coord_flip() + theme_minimal()
 ```
 
+This plot suggests that Taylor frequently mentions cars without feeling the need to rhyme car with bar.
+
+
+This second plot ony considers songs where Taylor Swift mentions bars, and the bars are filled in to show how many of these songs use bar as a rhyme for car.
 
 ```{r}
-ggplot(car_bar_data, aes(x = fct_relevel(album_name, album_levels), fill = car_or_bar)) +
+ggplot(filter(car_bar_data, bar), aes(x = fct_relevel(album_name, album_levels), fill = car_bar)) +
 geom_bar() +
 labs(
-title = "How Many Songs Mention Cars or Bars?",
+title = "How Many Songs Mentioning Bars Mention Cars?",
 x = "Album",
-y = "Number of Songs",
-fill = "Song Mentions Cars or Bars?"
+y = "Number of Songs Mentioning Bars",
+fill = "Song Mentions Cars?"
 )+ coord_flip() + theme_minimal()
 ```
 
-```{r}
-car_all_data <- car_bar_data |>
-  mutate(car_not_word = str_detect(lyrics, "[Cc]ars?"))
+This plot suggests that there are fewer instances where Taylor mentions bars without also rhyming it with cars than the number of instances where Taylor mentions cars without rhyming it with bars. We can summarize these results:
 
-ggplot(filter(car_all_data, car_not_word), aes(x = fct_relevel(album_name, album_levels), fill = car)) +
-geom_bar() +
-labs(
-title = "How Many Songs with `Car' Mention Cars",
-x = "Album",
-y = "Number of Songs with 'C/car' or 'C/cars' in the Lyrics",
-fill = "Mentions Cars"
-)+ coord_flip() + theme_minimal()
+```{r}
+  summarize(car_bar_data, Perc_Car_Bar_Rhymes = 100*sum(car_bar)/n(), Perc_Bar_Rhymes_Per_Car_Mentions = 100*sum(car_bar)/sum(car), Perc_Car_Rhymes_Per_Bar_Mentions = 100*sum(car_bar)/sum(bar), rhymes = sum(car_bar))
 ```
 
+This table clearly shows that very few Taylor Swift songs actually feature car-bar rhymes (only 2.11 percent!), or 7 songs in total. It also shows Taylor is less likely to use bar on it's own. 15.9\% of the there time cars are mentioned, they are mentioned as a rhyme with bar, but 36.8\% of the time bars are mentioned are they mentioned as a rhyme with car.
 
+
+However, I do not believe that repeatedly rhyming cars with bars is initself a problem. Critics usually complain that rhyming cars with bars is indicative of lazy songwriting. Thus, if rhyming cars with bars is truly a valid critique, we would expect songs that rhyme cars with bars to be less musically varied than Taylor's songs that do not rhyme cars with bars. In the next plot, we will compare the spread of 5 different ratings for Taylor Swift songs that rhyme car with bar, and those that don't.
 
 ```{r}
 longer_car_bar_data <- car_bar_data |>
@@ -105,13 +117,16 @@ longer_car_bar_data <- car_bar_data |>
 
 longer_car_bar_data |>
 ggplot(aes(x = what_var, y = what_val, color = car_bar)) +
-  geom_boxplot() + theme_minimal() +
+  geom_boxplot() +
   labs(title = "Scores of Songs Rhyming Car with Bar Vs Without", 
-  x = "Type of Score", y = "Score (0-1)", color = "Song Rhymes Car with Bar") + coord_flip()
+  x = "Type of Score", y = "Score (0-1)", color = "Song Rhymes Car with Bar") + coord_flip() + theme_minimal()
 ```
 
+It seems like even for songs where Taylor rhymes car with bar, the songs vary greatly in terms of their danceability, loudness, acousticness, instrumentalness, and valence. Thus, it seems like rhyimg cars with bars is not actually as big of an issue as people claim. Taylor Swift's songs that rhyme car with bars are just as varied in terms of sound as those that do not rhyme cars with bars.
 
 
+
+Now that we've disputed the claim that Taylor Swift's car-bar rhyming is an issue, I am interested in the other words that Taylor Swift could have rhymed with car. This plot shows the other words that Taylor uses in her songs, and the frequency that they appear in her discography.
 
 ```{r}
 how_many_cars_and_bars_data <- taylor_album_songs |>
@@ -129,10 +144,7 @@ ggplot(how_many_cars_and_bars_data) +
 labs(
 title = "How Many Times Did Songs Mentioning Cars and Bars Mention Cars and Bars?",
 x = "Song Release Date",
-y = "Number of Car or Bar Mentions in Song") 
-```
-
-```{r}
+y = "Number of Car or Bar Mentions in Song") + theme_minimal()
 
 #I had to look up the "unlist()" to make the list of lists into a list with objects
 # Source - https://www.r-bloggers.com/2023/08/the-unlist-function-in-r/
@@ -150,17 +162,42 @@ all_ars_data <- as.data.frame(list(raw_words = all_ars)) |>
   summarize(ar_counts = n())
 
 
-
-
 ggplot(all_ars_data, aes(x = fct_reorder(all_singular_ars, ar_counts), y = ar_counts)) +
 geom_col(fill = "#2aaaa2") +
 labs(
 title = "Number of Times Words Rhyming with Car are Mentioned",
 x = "Lyric",
 y = "Number of Mentions"
-) + coord_flip()
+) + coord_flip() + theme_minimal()
 ```
 
 Combinatorialists rejoice! Taylor Swift is clearly a fan of stars and bars.
 
+This plot suggests that out of all words that rhyme with "car," Taylor Swift does indeed use the word "car" the most frequently. However, she clearly discusses many different car-rhymes.
 
+
+I am also curious in how many times Taylor Swift sings words that contain "car" without mentioning car. This plot shows all the words in Taylor Swift lyrics that contain car, and their frequency in her discography.
+```{r}
+
+all_car_bad <- as.character(taylor_album_songs$lyrics) |> str_extract_all("\\b\\w*[Cc]ar\\w*\\b")
+
+all_car <- all_car_bad |> unlist()
+
+all_car_data <- as.data.frame(list(raw_car_words = all_car)) |>
+  mutate(lowercase_car = str_to_lower(raw_car_words)) |>
+  mutate(all_singular_car = ifelse(str_detect(lowercase_car, "s\\b"),str_sub(lowercase_car, 1, str_length(lowercase_car)-1), lowercase_car)) |>
+  group_by(all_singular_car)|>
+  summarize(car_counts = n())
+
+
+ggplot(all_car_data, aes(x = fct_reorder(all_singular_car, car_counts), y = car_counts)) +
+geom_col(fill = "#2aaaa2") +
+labs(
+title = "Number of Times Words Contining Car are Mentioned",
+x = "Lyric",
+y = "Number of Mentions"
+) + coord_flip() + theme_minimal()
+```
+
+
+Similar to the previous graph, while this graph does suggest that Taylor really likes the word "car," she has many different lyrics that contain car, and so she may create rhymes based off of these, as well. For example, in the song "cardigan," she rhymes "cardigan" with "car again."

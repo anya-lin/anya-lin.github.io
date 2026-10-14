@@ -210,16 +210,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">car_or_bar =</span>  car <span class="sc">|</span> bar)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p>First, we will determine how frequently Taylor Swift rhymes car with bar per album.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>R Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">filter</span>(car_bar_data, bar), <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_relevel</span>(album_name, album_levels), <span class="at">fill =</span> car_bar)) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(car_bar_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_relevel</span>(album_name, album_levels), <span class="at">fill =</span> car_bar)) <span class="sc">+</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>() <span class="sc">+</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"How Many Songs Mentioning Bars Mention Cars?"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"How Many Songs Rhyme Car with Bar?"</span>,</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Album"</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Songs Mentioning Bars"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">fill =</span> <span class="st">"Song Mentions Cars?"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Songs Per Album"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">fill =</span> <span class="st">"Song Rhymes Car with Bar?"</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
@@ -229,18 +230,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
+<details class="code-fold">
+<summary>R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">group_by</span>(car_bar_data, album_name) <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Percent =</span> <span class="dv">100</span><span class="sc">*</span><span class="fu">sum</span>(car_bar)<span class="sc">/</span><span class="fu">n</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 2
+   album_name                    Percent
+   &lt;chr&gt;                           &lt;dbl&gt;
+ 1 1989                             0   
+ 2 1989 (Taylor's Version)          0   
+ 3 Fearless                         0   
+ 4 Fearless (Taylor's Version)      0   
+ 5 Lover                           11.1 
+ 6 Midnights                        3.85
+ 7 Red                              0   
+ 8 Red (Taylor's Version)           0   
+ 9 Speak Now                        0   
+10 Speak Now (Taylor's Version)     0   
+11 THE TORTURED POETS DEPARTMENT    3.23
+12 Taylor Swift                     0   
+13 The Life of a Showgirl           0   
+14 evermore                         5.88
+15 folklore                         5.88
+16 reputation                       6.67</code></pre>
 </div>
+</div>
+<p>This graph and table suggest that in the vast majority of her songs, Taylor Swift actually does not rhyme car with bar. In fact, even in her album Lover, which has the most instances of songs where Taylor rhymes car with bar, only 11.1 percent of the songs contain a car-bar rhyme. This seems to be enough evidence to dispute the claim that Taylor Swift is constantly rhyming car with bar</p>
+<p>However, one might still be interested in how frequently bar and car are used as lyrics if they are not being rhymed with each other. The following plots show the number of songs that mentioned either cars or bars in each album, and for each plot, it shows how manyof those songs used car or bar as a rhyme for the word we are examining.</p>
+<p>This first plot ony considers songs where Taylor Swift mentions cars, and the bars are filled in to show how many of these songs use car as a rhyme for bar.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>R Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">filter</span>(car_bar_data, car), <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_relevel</span>(album_name, album_levels), <span class="at">fill =</span> car_bar)) <span class="sc">+</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"How Many Songs Mentioning Cars also Mention Bars?"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Album"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Songs Mentioning Cars"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="at">fill =</span> <span class="st">"Song Mentions Bars?"</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">filter</span>(car_bar_data, car), <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_relevel</span>(album_name, album_levels), <span class="at">fill =</span> car_bar)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"How Many Songs Mentioning Cars also Mention Bars?"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Album"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Songs Mentioning Cars"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">fill =</span> <span class="st">"Song Mentions Bars?"</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -250,17 +280,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>This plot suggests that Taylor frequently mentions cars without feeling the need to rhyme car with bar.</p>
+<p>This second plot ony considers songs where Taylor Swift mentions bars, and the bars are filled in to show how many of these songs use bar as a rhyme for car.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>R Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(car_bar_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_relevel</span>(album_name, album_levels), <span class="at">fill =</span> car_or_bar)) <span class="sc">+</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"How Many Songs Mention Cars or Bars?"</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Album"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Songs"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">fill =</span> <span class="st">"Song Mentions Cars or Bars?"</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">filter</span>(car_bar_data, bar), <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_relevel</span>(album_name, album_levels), <span class="at">fill =</span> car_bar)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"How Many Songs Mentioning Bars Mention Cars?"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Album"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Songs Mentioning Bars"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="at">fill =</span> <span class="st">"Song Mentions Cars?"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -270,40 +302,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>This plot suggests that there are fewer instances where Taylor mentions bars without also rhyming it with cars than the number of instances where Taylor mentions cars without rhyming it with bars. We can summarize these results:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>R Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>car_all_data <span class="ot">&lt;-</span> car_bar_data <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">car_not_word =</span> <span class="fu">str_detect</span>(lyrics, <span class="st">"[Cc]ars?"</span>))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">filter</span>(car_all_data, car_not_word), <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_relevel</span>(album_name, album_levels), <span class="at">fill =</span> car)) <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"How Many Songs with `Car' Mention Cars"</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Album"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Songs with 'C/car' or 'C/cars' in the Lyrics"</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="at">fill =</span> <span class="st">"Mentions Cars"</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>)<span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(car_bar_data, <span class="at">Perc_Car_Bar_Rhymes =</span> <span class="dv">100</span><span class="sc">*</span><span class="fu">sum</span>(car_bar)<span class="sc">/</span><span class="fu">n</span>(), <span class="at">Perc_Bar_Rhymes_Per_Car_Mentions =</span> <span class="dv">100</span><span class="sc">*</span><span class="fu">sum</span>(car_bar)<span class="sc">/</span><span class="fu">sum</span>(car), <span class="at">Perc_Car_Rhymes_Per_Bar_Mentions =</span> <span class="dv">100</span><span class="sc">*</span><span class="fu">sum</span>(car_bar)<span class="sc">/</span><span class="fu">sum</span>(bar), <span class="at">rhymes =</span> <span class="fu">sum</span>(car_bar))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="about_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  Perc_Car_Bar_Rhymes Perc_Bar_Rhymes_Per_Car_Me…¹ Perc_Car_Rhymes_Per_…² rhymes
+                &lt;dbl&gt;                        &lt;dbl&gt;                  &lt;dbl&gt;  &lt;int&gt;
+1                2.11                         15.9                   36.8      7
+# ℹ abbreviated names: ¹​Perc_Bar_Rhymes_Per_Car_Mentions,
+#   ²​Perc_Car_Rhymes_Per_Bar_Mentions</code></pre>
 </div>
 </div>
-</div>
+<p>This table clearly shows that very few Taylor Swift songs actually feature car-bar rhymes (only 2.11 percent!), or 7 songs in total. It also shows Taylor is less likely to use bar on it’s own. 15.9% of the there time cars are mentioned, they are mentioned as a rhyme with bar, but 36.8% of the time bars are mentioned are they mentioned as a rhyme with car.</p>
+<p>However, I do not believe that repeatedly rhyming cars with bars is initself a problem. Critics usually complain that rhyming cars with bars is indicative of lazy songwriting. Thus, if rhyming cars with bars is truly a valid critique, we would expect songs that rhyme cars with bars to be less musically varied than Taylor’s songs that do not rhyme cars with bars. In the next plot, we will compare the spread of 5 different ratings for Taylor Swift songs that rhyme car with bar, and those that don’t.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>R Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>longer_car_bar_data <span class="ot">&lt;-</span> car_bar_data <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(danceability, loudness, acousticness, instrumentalness, valence),  <span class="at">names_to =</span> <span class="st">"what_var"</span> , <span class="at">values_to =</span> <span class="st">"what_val"</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>longer_car_bar_data <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> what_var, <span class="at">y =</span> what_val, <span class="at">color =</span> car_bar)) <span class="sc">+</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scores of Songs Rhyming Car with Bar Vs Without"</span>, </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Type of Score"</span>, <span class="at">y =</span> <span class="st">"Score (0-1)"</span>, <span class="at">color =</span> <span class="st">"Song Rhymes Car with Bar"</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>longer_car_bar_data <span class="ot">&lt;-</span> car_bar_data <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(danceability, loudness, acousticness, instrumentalness, valence),  <span class="at">names_to =</span> <span class="st">"what_var"</span> , <span class="at">values_to =</span> <span class="st">"what_val"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>longer_car_bar_data <span class="sc">|&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> what_var, <span class="at">y =</span> what_val, <span class="at">color =</span> car_bar)) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scores of Songs Rhyming Car with Bar Vs Without"</span>, </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"Type of Score"</span>, <span class="at">y =</span> <span class="st">"Score (0-1)"</span>, <span class="at">color =</span> <span class="st">"Song Rhymes Car with Bar"</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -313,25 +339,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>It seems like even for songs where Taylor rhymes car with bar, the songs vary greatly in terms of their danceability, loudness, acousticness, instrumentalness, and valence. Thus, it seems like rhyimg cars with bars is not actually as big of an issue as people claim. Taylor Swift’s songs that rhyme car with bars are just as varied in terms of sound as those that do not rhyme cars with bars.</p>
+<p>Now that we’ve disputed the claim that Taylor Swift’s car-bar rhyming is an issue, I am interested in the other words that Taylor Swift could have rhymed with car. This plot shows the other words that Taylor uses in her songs, and the frequency that they appear in her discography.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>R Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>how_many_cars_and_bars_data <span class="ot">&lt;-</span> taylor_album_songs <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">how_many_car =</span> <span class="fu">str_count</span>(lyrics, <span class="st">"</span><span class="sc">\\</span><span class="st">b[Cc]ars?</span><span class="sc">\\</span><span class="st">b"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">how_many_bar =</span> <span class="fu">str_count</span>(lyrics, <span class="st">"</span><span class="sc">\\</span><span class="st">b[Bb]ars?</span><span class="sc">\\</span><span class="st">b"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(how_many_car <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">|</span> how_many_bar <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#I took code from https://stackoverflow.com/a/58309991</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Posted by Slouei</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieved 2026-10-14, License - CC BY-SA 4.0</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># To figure out how to make the legend</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(how_many_cars_and_bars_data) <span class="sc">+</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> album_release, <span class="at">y =</span> how_many_car, <span class="at">color =</span> <span class="st">"Car"</span>), <span class="at">position =</span> <span class="fu">position_jitter</span>()) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> album_release, <span class="at">y =</span> how_many_bar, <span class="at">color =</span> <span class="st">"Bar"</span> ), <span class="at">position =</span> <span class="fu">position_jitter</span>())  <span class="sc">+</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"How Many Times Did Songs Mentioning Cars and Bars Mention Cars and Bars?"</span>,</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Song Release Date"</span>,</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Car or Bar Mentions in Song"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>how_many_cars_and_bars_data <span class="ot">&lt;-</span> taylor_album_songs <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">how_many_car =</span> <span class="fu">str_count</span>(lyrics, <span class="st">"</span><span class="sc">\\</span><span class="st">b[Cc]ars?</span><span class="sc">\\</span><span class="st">b"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">how_many_bar =</span> <span class="fu">str_count</span>(lyrics, <span class="st">"</span><span class="sc">\\</span><span class="st">b[Bb]ars?</span><span class="sc">\\</span><span class="st">b"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(how_many_car <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">|</span> how_many_bar <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#I took code from https://stackoverflow.com/a/58309991</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Posted by Slouei</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieved 2026-10-14, License - CC BY-SA 4.0</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># To figure out how to make the legend</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(how_many_cars_and_bars_data) <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> album_release, <span class="at">y =</span> how_many_car, <span class="at">color =</span> <span class="st">"Car"</span>), <span class="at">position =</span> <span class="fu">position_jitter</span>()) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> album_release, <span class="at">y =</span> how_many_bar, <span class="at">color =</span> <span class="st">"Bar"</span> ), <span class="at">position =</span> <span class="fu">position_jitter</span>())  <span class="sc">+</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"How Many Times Did Songs Mentioning Cars and Bars Mention Cars and Bars?"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Song Release Date"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Car or Bar Mentions in Song"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -340,35 +368,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
+<details class="code-fold">
+<summary>R Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#I had to look up the "unlist()" to make the list of lists into a list with objects</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Source - https://www.r-bloggers.com/2023/08/the-unlist-function-in-r/</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>all_ars_bad <span class="ot">&lt;-</span> <span class="fu">as.character</span>(taylor_album_songs<span class="sc">$</span>lyrics) <span class="sc">|&gt;</span> <span class="fu">str_extract_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">w+(?&lt;!e)ars?</span><span class="sc">\\</span><span class="st">b"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>all_ars <span class="ot">&lt;-</span> all_ars_bad <span class="sc">|&gt;</span> <span class="fu">unlist</span>()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># I also had to look up a function that would make the list into a data frame</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#source - https://www.geeksforgeeks.org/r-language/how-to-convert-a-list-to-a-dataframe-in-r/</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>all_ars_data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">list</span>(<span class="at">raw_words =</span> all_ars)) <span class="sc">|&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lowercase_ars =</span> <span class="fu">str_to_lower</span>(raw_words)) <span class="sc">|&gt;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">all_singular_ars =</span> <span class="fu">ifelse</span>(<span class="fu">str_detect</span>(lowercase_ars, <span class="st">"s</span><span class="sc">\\</span><span class="st">b"</span>),<span class="fu">str_sub</span>(lowercase_ars, <span class="dv">1</span>, <span class="fu">str_length</span>(lowercase_ars)<span class="sc">-</span><span class="dv">1</span>), lowercase_ars)) <span class="sc">|&gt;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(all_singular_ars)<span class="sc">|&gt;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">ar_counts =</span> <span class="fu">n</span>())</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_ars_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(all_singular_ars, ar_counts), <span class="at">y =</span> ar_counts)) <span class="sc">+</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#2aaaa2"</span>) <span class="sc">+</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"Number of Times Words Rhyming with Car are Mentioned"</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Lyric"</span>,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Mentions"</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="about_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
+</div>
+</div>
+<p>Combinatorialists rejoice! Taylor Swift is clearly a fan of stars and bars.</p>
+<p>This plot suggests that out of all words that rhyme with “car,” Taylor Swift does indeed use the word “car” the most frequently. However, she clearly discusses many different car-rhymes.</p>
+<p>I am also curious in how many times Taylor Swift sings words that contain “car” without mentioning car. This plot shows all the words in Taylor Swift lyrics that contain car, and their frequency in her discography.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>R Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#I had to look up the "unlist()" to make the list of lists into a list with objects</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Source - https://www.r-bloggers.com/2023/08/the-unlist-function-in-r/</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>all_ars_bad <span class="ot">&lt;-</span> <span class="fu">as.character</span>(taylor_album_songs<span class="sc">$</span>lyrics) <span class="sc">|&gt;</span> <span class="fu">str_extract_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">w+(?&lt;!e)ars?</span><span class="sc">\\</span><span class="st">b"</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>all_ars <span class="ot">&lt;-</span> all_ars_bad <span class="sc">|&gt;</span> <span class="fu">unlist</span>()</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># I also had to look up a function that would make the list into a data frame</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#source - https://www.geeksforgeeks.org/r-language/how-to-convert-a-list-to-a-dataframe-in-r/</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>all_ars_data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">list</span>(<span class="at">raw_words =</span> all_ars)) <span class="sc">|&gt;</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lowercase_ars =</span> <span class="fu">str_to_lower</span>(raw_words)) <span class="sc">|&gt;</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">all_singular_ars =</span> <span class="fu">ifelse</span>(<span class="fu">str_detect</span>(lowercase_ars, <span class="st">"s</span><span class="sc">\\</span><span class="st">b"</span>),<span class="fu">str_sub</span>(lowercase_ars, <span class="dv">1</span>, <span class="fu">str_length</span>(lowercase_ars)<span class="sc">-</span><span class="dv">1</span>), lowercase_ars)) <span class="sc">|&gt;</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(all_singular_ars)<span class="sc">|&gt;</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">ar_counts =</span> <span class="fu">n</span>())</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_ars_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(all_singular_ars, ar_counts), <span class="at">y =</span> ar_counts)) <span class="sc">+</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#2aaaa2"</span>) <span class="sc">+</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"Number of Times Words Rhyming with Car are Mentioned"</span>,</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Lyric"</span>,</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Mentions"</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>all_car_bad <span class="ot">&lt;-</span> <span class="fu">as.character</span>(taylor_album_songs<span class="sc">$</span>lyrics) <span class="sc">|&gt;</span> <span class="fu">str_extract_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">w*[Cc]ar</span><span class="sc">\\</span><span class="st">w*</span><span class="sc">\\</span><span class="st">b"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>all_car <span class="ot">&lt;-</span> all_car_bad <span class="sc">|&gt;</span> <span class="fu">unlist</span>()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>all_car_data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">list</span>(<span class="at">raw_car_words =</span> all_car)) <span class="sc">|&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lowercase_car =</span> <span class="fu">str_to_lower</span>(raw_car_words)) <span class="sc">|&gt;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">all_singular_car =</span> <span class="fu">ifelse</span>(<span class="fu">str_detect</span>(lowercase_car, <span class="st">"s</span><span class="sc">\\</span><span class="st">b"</span>),<span class="fu">str_sub</span>(lowercase_car, <span class="dv">1</span>, <span class="fu">str_length</span>(lowercase_car)<span class="sc">-</span><span class="dv">1</span>), lowercase_car)) <span class="sc">|&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(all_singular_car)<span class="sc">|&gt;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">car_counts =</span> <span class="fu">n</span>())</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_car_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(all_singular_car, car_counts), <span class="at">y =</span> car_counts)) <span class="sc">+</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#2aaaa2"</span>) <span class="sc">+</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="at">title =</span> <span class="st">"Number of Times Words Contining Car are Mentioned"</span>,</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="at">x =</span> <span class="st">"Lyric"</span>,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="at">y =</span> <span class="st">"Number of Mentions"</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -378,7 +435,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Combinatorialists rejoice! Taylor Swift is clearly a fan of stars and bars.</p>
+<p>Similar to the previous graph, while this graph does suggest that Taylor really likes the word “car,” she has many different lyrics that contain car, and so she may create rhymes based off of these, as well. For example, in the song “cardigan,” she rhymes “cardigan” with “car again.”</p>
 
 
 
