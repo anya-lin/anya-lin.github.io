@@ -39,7 +39,7 @@ Continuing with my Data Visualization from Project 1, here, I will look at Taylo
 
 Taylor Swift gets a lot of hate for supposedly overusing "car" as a rhyme with "bar." I am very skeptical of this criticism, and so I will analyze how frequently she actually does this.
 
-In order to invesigate this very pressing research question, I am looking at data containing all the lyrics from songs on Taylor Swift's albums released by February 2026. This excludes non-album singles like "Christmas Tree Farm," and songs released after February 2026, like "Pink Clouding.""
+In order to investigate this very pressing research question, I am looking at data containing all the lyrics from songs on Taylor Swift's albums released by February 2026. This excludes non-album singles like "Christmas Tree Farm," and songs released after February 2026, like "Pink Clouding."
 
 
 
@@ -48,7 +48,7 @@ In order to invesigate this very pressing research question, I am looking at dat
 
 
 
-First, to see if this critiscim might hold weight, I am interested in the number of times Taylor Swift songs contain words that rhyme with car. The following plot summarizes this:
+First, to see if this critiscim might hold weight, I am interested in the number of times Taylor Swift song lyrics contain words that rhyme with car. The following plot summarizes this:
 ```{r}
 #   NOTE: For grading purposes, I believe I hit all requirements for the project
 # in the making of this first graph. I made a lot of other graphs, but you do not need to look at them to grade this!
@@ -80,7 +80,7 @@ y = "Number of Mentions"
 
 Combinatorialists rejoice! Taylor Swift is clearly a fan of stars and bars.
 
-This plot suggests that out of all words that rhyme with "car," Taylor Swift uses "car" the most frequently, and "bar" is very common, as well. However, "star," "far," and "scar," are actually used more than "bar", and so future investigations into this topic could determine how freuently these other words are used as rhymes for "car."
+This plot suggests that out of all words that rhyme with "car," Taylor Swift uses "car" the most frequently, and "bar" is very common, as well. However, "star," "far," and "scar," are actually used more than "bar," and so future investigations into this topic could determine how frequently these other words are used as rhymes for "car."
 
 However, since "bar" is mentioned so frequently, it is worth starting our investigation into how frequently Taylor Swift rhymes car with bar.
 
@@ -162,10 +162,10 @@ Comparing the bars chart to the cars chart, it seems like Taylor is more likely 
   summarize(car_bar_data, Perc_Car_Bar_Rhymes = 100*sum(car_bar)/n(), Perc_Bar_Rhymes_Per_Car_Mentions = 100*sum(car_bar)/sum(car), Perc_Car_Rhymes_Per_Bar_Mentions = 100*sum(car_bar)/sum(bar), rhymes = sum(car_bar))
 ```
 
-This table clearly shows that very few Taylor Swift songs actually feature car-bar rhymes (only 2.11\%!), or 7 songs in total. It also shows Taylor is less likely to mention bar on its own than car on its own. Only 15.9\% of the time that cars are mentioned are they mentioned as a rhyme with bar. However, 36.8\% of the time bars are mentioned are they mentioned as a rhyme with car.
+This table clearly shows that very few Taylor Swift songs actually feature car-bar rhymes (only 2.11\%!), or 7 songs in total. It also shows Taylor is less likely to mention bar on its own than car on its own. Only 15.9\% of the songs mentioning cars mention car as a rhyme with bar. However, 36.8\% of the songs mentioning bars mention bar as a rhyme with car.
 
 
-However, I do not believe that repeatedly rhyming cars with bars is in itself a problem. instead, critics usually complain that rhyming cars with bars is indicative of lazy songwriting. Thus, if rhyming cars with bars is truly a valid critique, we would expect Taylor's songs that rhyme cars with bars to be less musically diverse than Taylor's songs that do not rhyme cars with bars. In the next plot, we will compare the spread of 5 different scores for Taylor Swift songs that rhyme car with bar, and those that don't.
+However, I do not believe that repeatedly rhyming cars with bars is in itself a problem. Instead, critics usually complain that rhyming cars with bars is indicative of lazy songwriting. Thus, if rhyming cars with bars is truly a valid critique, we would expect Taylor's songs that rhyme cars with bars to be less musically diverse than Taylor's songs that do not rhyme cars with bars. In the next plot, we will compare the spread of 5 different scores for Taylor Swift songs that rhyme car with bar, and those that don't.
 
 ```{r}
 longer_car_bar_data <- car_bar_data |>
