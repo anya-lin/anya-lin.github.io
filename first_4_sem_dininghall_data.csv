@@ -1,4 +1,4 @@
-Date,Place,Meal
+date,place,meal
 8/17/24,Frank,Lu
 8/17/24,Frank,Di
 8/18/24,Frank,Lu
@@ -118,16 +118,6 @@ Date,Place,Meal
 10/10/24,Frank,Br
 10/10/24,Frank,Lu
 10/10/24,Frank,Di
-10/11/24,Airport,Lu
-10/11/24,Out,Di
-10/12/24,Chipotle,Lu
-10/12/24,Out,Di
-10/13/24,Out,Lu
-10/13/24,Chipotle,Di
-10/14/24,Chipotle,Lu
-10/14/24,In N Out,Di
-10/15/24,Out,Lu
-10/15/24,Airport,Di
 10/16/24,Oldenborg,Lu
 10/16/24,Frary,Di
 10/17/24,Frank,Lu
@@ -270,7 +260,7 @@ Date,Place,Meal
 2/2/25,Malott,Lu
 2/2/25,Frank,Di
 2/3/25,Frary,Br
-2/3/25,Out (BAM),Lu
+2/3/25,BAM,Lu
 2/3/25,Frary,Di
 2/4/25,Frank,Lu
 2/4/25,Frank,Di
@@ -430,7 +420,7 @@ Date,Place,Meal
 4/30/25,Malott,Di
 5/1/25,McConnell,Lu
 5/1/25,Malott,Di
-5/2/25,Out (BAM),Lu
+5/2/25,BAM,Lu
 5/2/25,McConnell,Di
 5/3/25,Malott,Lu
 5/3/25,Malott,Di
@@ -751,3 +741,218 @@ Date,Place,Meal
 12/11/25,The Hoch,Di
 12/12/25,Malott,Lu
 12/12/25,McConnell,Di
+1/19/26,Frary,Di
+1/20/26,Frary,Lu
+1/20/26,Frank,Di
+1/21/26,Frank,Lu
+1/21/26,Malott,Di
+1/22/26,Frank,Lu
+1/22/26,Village,Di
+1/23/26,McConnell,Di
+1/24/26,McConnell,Lu
+1/24/26,The Hoch,Di
+1/25/26,Frary,Lu
+1/25/26,Frank,Di
+1/26/26,Frank,Lu
+1/26/26,Malott,Di
+1/27/26,Frank,Lu
+1/27/26,Malott,Di
+1/28/26,Frank,Lu
+1/28/26,Malott,Di
+1/29/26,Frary,Lu
+1/29/26,The Hoch,Di
+1/30/26,Malott,Lu
+1/30/26,McConnell,Di
+1/31/26,McConnell,Lu
+1/31/26,Dr. Rad,Di
+2/1/26,Frary,Lu
+2/1/26,Frank,Di
+2/2/26,Frank,Lu
+2/2/26,Malott,Di
+2/3/26,Frary,Lu
+2/3/26,Malott,Di
+2/4/26,Frank,Lu
+2/4/26,Frary,Di
+2/5/26,Frank,Lu
+2/5/26,Frary,Di
+2/6/26,Frary,Lu
+2/6/26,The Hoch,Di
+2/7/26,Frary,Lu
+2/7/26,Malott,Di
+2/8/26,Frank,Lu
+2/8/26,The Hoch,Di
+2/9/26,Frank,Lu
+2/9/26,Malott,Di
+2/10/26,Frary,Lu
+2/10/26,Frary,Di
+2/11/26,Malott,Lu
+2/11/26,Frank,Di
+2/12/26,Frank,Lu
+2/12/26,The Hoch,Di
+2/13/26,Malott,Lu
+2/13/26,Frary,Di
+2/14/26,McConnell,Lu
+2/14/26,Frary,Di
+2/15/26,Frank,Lu
+2/15/26,The Hoch,Di
+2/16/26,Frank,Lu
+2/16/26,Frary,Di
+2/17/26,Frary,Lu
+2/17/26,The Hoch,Di
+2/18/26,Malott,Lu
+2/18/26,Coop Fountain,Di
+2/19/26,Frank,Lu
+2/19/26,Frary,Di
+2/20/26,Malott,Lu
+2/20/26,The Hoch,Di
+2/21/26,Frary,Lu
+2/21/26,McConnell,Di
+2/22/26,Frank,Lu
+2/22/26,Malott,Di
+2/23/26,Frary,Lu
+2/23/26,Malott,Di
+2/24/26,Frary,Lu
+2/24/26,Coop Fountain,Di
+2/25/26,Malott,Lu
+2/25/26,Coop Fountain,Di
+2/26/26,Frary,Lu
+2/26/26,Frank,Di
+2/27/26,Malott,Lu
+2/27/26,Chipotle,Di
+2/28/26,McConnell,Lu
+2/28/26,Malott,Di
+3/1/26,McConnell,Lu
+3/1/26,The Hoch,Di
+3/2/26,Frank,Lu
+3/2/26,Malott,Di
+3/3/26,Frary,Lu
+3/3/26,Frank,Di
+3/4/26,Frank,Lu
+3/4/26,Frank,Di
+3/5/26,Frank,Lu
+3/5/26,Frary,Di
+3/6/26,Malott,Lu
+3/6/26,McConnell,Di
+3/7/26,The Hoch,Lu
+3/7/26,Malott,Di
+3/8/26,Frank,Lu
+3/8/26,The Hoch,Di
+3/9/26,Frank,Lu
+3/9/26,Malott,Di
+3/10/26,Frary,Lu
+3/10/26,Coop Fountain,Di
+3/11/26,Frary,Lu
+3/11/26,Village,Di
+3/12/26,Malott,Lu
+3/12/26,The Hoch,Di
+3/13/26,Malott,Lu
+3/13/26,Frary,Di
+3/23/26,Frank,Lu
+3/23/26,The Hoch,Di
+3/24/26,The Hoch,Lu
+3/24/26,Frank,Di
+3/25/26,Malott,Lu
+3/25/26,Coop Fountain,Di
+3/26/26,Frary,Lu
+3/26/26,Frank,Di
+3/27/26,Malott,Lu
+3/27/26,McConnell,Di
+3/28/26,Frary,Lu
+3/28/26,Malott,Di
+3/29/26,Frank,Lu
+3/29/26,The Hoch,Di
+3/30/26,Frank,Lu
+3/30/26,Malott,Di
+3/31/26,Frary,Lu
+3/31/26,Malott,Di
+4/1/26,Frank,Lu
+4/1/26,Coop Fountain,Di
+4/2/26,Malott,Lu
+4/2/26,The Hoch,Di
+4/3/26,Malott,Lu
+4/3/26,Frary,Di
+4/4/26,The Hoch,Lu
+4/4/26,Malott,Di
+4/5/26,The Hoch,Lu
+4/5/26,Frary,Di
+4/6/26,Frank,Lu
+4/6/26,Frary,Di
+4/7/26,Malott,Lu
+4/7/26,Frary,Di
+4/8/26,Malott,Lu
+4/8/26,Out,Di
+4/9/26,Frank,Lu
+4/9/26,Village,Di
+4/10/26,Malott,Lu
+4/10/26,McConnell,Di
+4/11/26,McConnell,Lu
+4/11/26,The Hoch,Di
+4/12/26,Frank,Lu
+4/12/26,The Hoch,Di
+4/13/26,Frank,Lu
+4/13/26,Malott,Di
+4/14/26,Frary,Lu
+4/14/26,Coop Fountain,Di
+4/15/26,Frank,Lu
+4/15/26,Coop Fountain,Di
+4/16/26,Frank,Lu
+4/16/26,The Hoch,Di
+4/17/26,Malott,Lu
+4/17/26,Malott,Di
+4/18/26,McConnell,Lu
+4/18/26,The Hoch,Di
+4/19/26,The Hoch,Lu
+4/19/26,Chipotle,Di
+4/20/26,Frary,Lu
+4/20/26,Malott,Di
+4/21/26,Malott,Lu
+4/21/26,Frary,Di
+4/22/26,Malott,Lu
+4/22/26,Coop Fountain,Di
+4/23/26,Frary,Lu
+4/23/26,Frank,Di
+4/24/26,Malott,Lu
+4/24/26,The Hoch,Di
+4/25/26,Frary,Lu
+4/25/26,Malott,Di
+4/26/26,Frank,Lu
+4/26/26,Frank,Di
+4/27/26,Frank,Lu
+4/27/26,Malott,Di
+4/28/26,Malott,Lu
+4/28/26,Coop Fountain,Di
+4/29/26,Frank,Lu
+4/29/26,Malott,Di
+4/30/26,Frank,Lu
+4/30/26,The Hoch,Di
+5/1/26,BAM,Lu
+5/1/26,McConnell,Di
+5/2/26,The Hoch,Lu
+5/2/26,Malott,Di
+5/3/26,Frank,Lu
+5/3/26,The Hoch,Di
+5/4/26,Frank,Lu
+5/4/26,Malott,Di
+5/5/26,Frank,Lu
+5/5/26,Frary,Di
+5/6/26,Frank,Lu
+5/6/26,Frank,Di
+5/7/26,Malott,Lu
+5/7/26,The Hoch,Di
+5/8/26,Malott,Lu
+5/8/26,The Hoch,Di
+5/9/26,Frary,Lu
+5/9/26,Malott,Di
+5/10/26,Malott,Lu
+5/10/26,The Hoch,Di
+5/11/26,Frary,Lu
+5/11/26,Malott,Di
+5/12/26,Frary,Lu
+5/12/26,McConnell,Di
+5/13/26,McConnell,Lu
+5/13/26,Malott,Di
+5/14/26,McConnell,Lu
+5/14/26,The Hoch,Di
+5/15/26,Malott,Lu
+5/15/26,McConnell,Di
+5/16/26,Frary,Lu
