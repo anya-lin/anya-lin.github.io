@@ -1,0 +1,68 @@
+---
+title: "I Refuse to Go to Collins"
+format:
+  html:
+    code-fold: true
+    code-summary: "R Code"
+    theme:
+      - minty
+      - brand
+    css: styles.css
+    toc: false
+    page-layout: full
+
+
+execute:
+  warning: false
+  message: false
+
+---
+
+
+In a philosophy class at Claremont McKenna, I read an argument for being vegetarian. My professor told the class that every year, students read this article, and every year, students would be vegetarian for about a day before giving up. Since I was already refusing to go to Collins due to how badly they messed up a quesadilla my freshman year, in order to further protest CMC and their atrocious culinary decisions, I decided to stop eating meat for the rest of the semester to prove him wrong. (Jokes of course, it was a great class, would reccomend!!)
+
+As someone who had been eating meat my whole life, this was actually a lot easier than I anticipated. However, I did notice that my meals took more planning, as I found it difficult to get enough nutrition while not eating meat at Pomona. I had been tracking where I got meals since I started college, and so looking at the data from my first three semesters at the 5Cs, I am interested in if the proportion of times I ate at Pomona each week when I was eating meat is different than when I was not.
+
+This plot shows the proportion of times I had a meal at Pomona each week I was on campus starting August 2024 and ending December 2025.
+
+```{r}
+library(tidyverse)
+library(lubridate)
+
+
+unclean_dh_data <- read.csv("first3sem_dininghall_data.csv")
+
+
+semi_clean_dh <- unclean_dh_data |>
+  mutate(week_of = floor_date(mdy(Date), unit = "week")) |>
+  group_by(week_of) |>
+  summarize(on_camp = sum(Place %in% c("Frank", "Frary", "Oldenborg")), on_camp_prop = on_camp/n()) |>
+  mutate(pesc = if_else(week_of >= mdy("09/13/2025"), "No Meat", "Meat"))
+
+
+ggplot(semi_clean_dh, aes(x = on_camp_prop, y = pesc, color = pesc)) +
+  geom_boxplot() +
+  labs(title = "On-Pomona Meals Per Week", 
+  x = "Proportion", y = "") + theme_minimal() + theme(legend.position = "none")
+
+```
+
+This does suggest that when I was not eating meat, I would eat at Pomona less frequently than when I was. However, this data is slightly misleading, because I was on campus for 6 weeks in the summer, during which Frary was the only open dining hall. Since I was eating meat during this time, this would skew the eating meat data towards higher proportions of eating at Pomona. The following plot removes these six weeks:
+
+
+```{r}
+semi_clean_dh_no_summer <- unclean_dh_data |>
+  mutate(week_of = floor_date(mdy(Date), unit = "week")) |>
+  filter(!between(week_of, mdy("7/13/2025"), mdy("8/17/2025"))) |>
+  group_by(week_of) |>
+  summarize(on_camp = sum(Place %in% c("Frank", "Frary", "Oldenborg")), on_camp_prop = on_camp/n()) |>
+  mutate(pesc = if_else(week_of >= mdy("09/13/2025"), "No Meat", "Meat"))
+
+
+ggplot(semi_clean_dh_no_summer, aes(x = on_camp_prop, y = pesc, color = pesc)) +
+  geom_boxplot() +
+  labs(title = "On-Pomona Meals Per Week (Excluding Frary only Weeks)", 
+  x = "Proportion", y = "") + theme_minimal() + theme(legend.position = "none")
+```
+
+It still seems like I would eat at Pomona more frequently when I was eating meat than when I wasn't.

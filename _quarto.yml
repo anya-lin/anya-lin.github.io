@@ -9,6 +9,7 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
+      - project3.qmd
       - text: Data Viz
         menu:
           - href: tidy1.qmd
