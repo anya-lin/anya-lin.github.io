@@ -1,5 +1,5 @@
 ---
-title: "Collins is Terrible"
+title: "Avoiding Meat at Pomona"
 format:
   html:
     code-fold: true
@@ -19,9 +19,11 @@ execute:
 
 **Background**
 
-In a philosophy class at Claremont McKenna my sophomore fall, I read an argument for being vegetarian. My professor told the class that every year, students read this article, and every year, students would be vegetarian for about a day before giving up. Since I was already refusing to go to Collins due to how badly they messed up a quesadilla my freshman year, in order to further protest CMC and their misguided beliefs about what students find acceptable to eat, I decided to stop eating meat for the rest of the academic year to prove him wrong. (Jokes of course, it was a great class)
+Due to how badly Collins messed up a quesadilla my freshman year, I have never eaten there since. Thus, my sophomore fall, I took a philosophy class at Claremont McKenna fully prepared to once again change my dining habits if it meant proving a point against CMC and their atrocious culinary decisions. So naturally, when my philosophy professor had us read an argument for being vegetarian, and said that every year students would respond by abstaining from eating meat for about a day, I decided I would stop eating meat for the rest of the academic year to prove him wrong.
 
-As someone who had been eating meat my whole life, this was actually a lot easier than I anticipated. However, I did notice that my meals took more planning, as I found it difficult to get enough nutrition if I ate a lot of my meals on campus at Pomona. Thus, I am interested in if there is a noticeable difference between the amount of times I had meals on Pomona when I was eating meat vs when I was not. To do this, for every week I was on campus, I am going to calculate the proportion of meals I ate at Pomona. Then, I will compare the average difference in the proportions from when I was eating meat vs when I was not.
+As someone who had been eating meat my whole life, avoiding it was actually easier than I anticipated. However, I did notice that my meals took more planning, as I found it difficult to get enough nutrition if I ate a lot of my meals on campus at Pomona. Thus, I am curious if having the dietary restriction of not eating meat might cause me to eat at Pomona less frequently.
+
+To investigate this, for every week I was on campus, I am going to calculate the proportion of meals I ate at Pomona. I will look at the average difference in the proportions from when I was eating meat vs when I was not. I will then simulate 1000 of these average differences under the assumption that there is no association between the proportion of times I eat at Pomona and whether or not I am eating meat.
 
 This aims to answer the question of if I personally tend to eat at Pomona less frequently when I have a dietary restriction of not eating meat.
 
@@ -29,27 +31,56 @@ I am using my own data that I have been collecting since I started college. I am
 
 **Data**
 
-This plot shows the proportion of times I had a meal at Pomona each week I was on campus starting August 2024 and ending May 2026.
+This bar chart shows the number of times I had meals at each of the dining halls from August 2024 to mid September 2025 (before I committed to disproving my philosophy professor).
 
 ```{r}
 library(tidyverse)
 
 unclean_dh_data <- read.csv("first_4_sem_dininghall_data.csv")
 
-semi_clean_dh <- unclean_dh_data |>
-  mutate(week_of = floor_date(mdy(date), unit = "week")) |>
-  group_by(week_of) |>
-  summarize(on_camp = sum(place %in% c("Frank", "Frary", "Oldenborg", "Coop Fountain")), on_camp_prop = on_camp/n()) |>
-  mutate(pesc = if_else(week_of >= mdy("09/13/2025"), "Not Eating Meat", "Eating Meat"))
+
+clean_dh_meat <- unclean_dh_data |>
+  mutate(date = (mdy(date))) |>
+  filter(place %in%  
+  c("Frank", "Frary", "Malott", "Collins", "The Hoch", "McConnell", "Oldenborg")) |>
+  filter(date < mdy("09/13/2025")) |>
+  group_by(place) |>
+  summarize(counts = n()) |>
+  mutate(place = fct_reorder(place, counts))
 
 
-ggplot(semi_clean_dh, aes(x = on_camp_prop, y = pesc, color = pesc)) +
-  geom_boxplot() +
-  labs(title = "On-Pomona Meals Per Week", 
-  x = "Proportion of Meals at Pomona Per Week", y = "") + theme_minimal() + theme(legend.position = "none")
+ggplot(clean_dh_meat, aes(x = place, y = counts, fill = place)) +
+  geom_col() +
+  labs(title = "Meals at Dining Halls While Eating Meat", 
+  x = "", y = "Total Meals at Dining Hall") + theme_minimal() + theme(legend.position = "none") + coord_flip() +
+  scale_fill_manual(values = c("Frank" = "#4c85e0", "Frary" = "#0d46a1", "Malott" = "#056603", "Collins" = "#700620", "The Hoch" = "#ded03c", "McConnell" = "#db7f2e", "Oldenborg" = "#5ed1db"))
 ```
 
-This does suggest that when I was not eating meat, I would eat at Pomona less frequently than when I was. However, this data is slightly misleading, because I was on campus for 6 weeks in the summer, during which Frary was the only open dining hall. Since I was eating meat during this time, this would skew the data for when I was eating meat towards higher proportions of eating at Pomona. The following plot removes these six weeks:
+In contrast, this bar chart shows the number of times I had meals at each of the dining halls while I was not eating meat, from mid September 2025 to May 2026.
+
+```{r}
+clean_dh_no_meat <- unclean_dh_data |>
+  mutate(date = (mdy(date))) |>
+  filter(place %in%  
+  c("Frank", "Frary", "Malott", "Collins", "The Hoch", "McConnell", "Oldenborg")) |>
+  filter(date >= mdy("09/13/2025")) |>
+  group_by(place) |>
+  summarize(counts = n()) |>
+  mutate(place = fct_reorder(place, counts))
+
+
+ggplot(clean_dh_no_meat, aes(x = place, y = counts, fill = place)) +
+  geom_col() +
+  labs(title = "Meals at Dining Halls While Not Eating Meat", 
+  x = "", y = "Total Meals at Dining Hall") + theme_minimal() + theme(legend.position = "none") + coord_flip() +
+  scale_fill_manual(values = c("Frank" = "#4c85e0", "Frary" = "#0d46a1", "Malott" = "#056603", "Collins" = "#700620", "The Hoch" = "#ded03c", "McConnell" = "#db7f2e", "Oldenborg" = "#5ed1db"))
+```
+
+As I was much wiser in my sophomore year than I was in my first year, note the complete lack of Collins on this bar chart.
+
+The following graph shows the proportion of times I had a meal at Pomona each week I was on campus when I was eating meat vs when I was not. I have data for 66 weeks. I was eating meat for 37 of these weeks and I was not eating meat for 29.
+
+(I was on campus for 6 weeks in the summer, during which Frary was the only open dining hall. Since I was eating meat during this period, I removed these 6 weeks to avoid artificially inflating the proportion of times I ate at Pomona each week while I was eating meat. The count of 66 weeks of data is after I removed the Frary only weeks.)
 
 ```{r}
 semi_clean_dh_no_summer <- unclean_dh_data |>
@@ -67,7 +98,9 @@ ggplot(semi_clean_dh_no_summer, aes(x = on_camp_prop, y = pesc, color = pesc)) +
 
 ```
 
-It seems like even when I remove the 6 weeks where Frary was my only option, I still tended to eat on Pomona more frequently when I was eating meat. Because these 6 weeks of Frary data are not representative of my usual dining hall choices, for the rest of this analysis, I will use this data with the 6 Frary-only weeks removed. This data has the proportion of times I ate at Pomona each week for 66 weeks. I was eating meat for 37 of these weeks and I was not eating meat for 29 of these weeks.
+These three graphs all suggest that when I was not eating meat, I would eat at Pomona less frequently than when I was.
+
+**Permutation Test**
 
 ```{r}
 semi_clean_dh_no_summer |>
@@ -77,12 +110,10 @@ semi_clean_dh_no_summer |>
 semi_clean_dh_no_summer |>
   group_by(pesc) |>
   summarize(ave_prop = mean(on_camp_prop)) |>
-  summarize(ave_diff = abs(diff(ave_prop)))
+  summarize(ave_diff = diff(ave_prop))
 ```
 
-These tables show that when I was eating meat, I on average ate at Pomona for 51.5% of my meals each week, and when I was not eating meat, I on average ate at Pomona for 42.3% of my meals each week. The difference in these percentages is 9.17%.
-
-**Permutation Test**
+When I was eating meat, I on average ate at Pomona for 0.515 of my meals each week, and when I was not eating meat, I on average ate at Pomona for 0.423 of my meals each week. The difference in these proportions is 0.0917.
 
 To see if this difference in proportions could have happened by random chance, I will run a permutation test where I will simulate 1000 versions of myself that are equally committed to protesting Claremont McKenna.
 
@@ -120,7 +151,7 @@ permute_stats |>
 
 ```
 
-This distribution shows the average difference in the proportion of times I ate at Pomona for when I was eating meat and when I was not, if there were no association between the proportion of times I ate at Pomona each week and whether or not I was eating meat. The aqua line represents the actual observed difference in proportion. As we can see, very few of the 1000 simulations produced data more extreme than the observed difference. In fact, we can calculate the p-value for the observed data:
+This distribution shows the average difference in the proportion of times I ate at Pomona for when I was eating meat and when I was not, if there were no association between the proportion of times I ate at Pomona each week and whether or not I was eating meat. The aqua line represents the actual observed difference in proportion (-0.0917). As we can see, very few of the 1000 simulations produced data more extreme than the observed difference. We can calculate the p-value for the observed data:
 
 ```{r}
 permute_stats |>
@@ -129,8 +160,12 @@ permute_stats |>
   )
 ```
 
-Since we only got results as or more extreme as the observed data 0.012 or 1.2% of the time, we can reject the null hypothesis. There is strong evidence that there is an association between the proportion of times I eat at Pomona each week and whether or not I am eating meat.
+Thus, in only 0.012 or 1.2% of the simulations did we get results as or more extreme as the actual observed data. This means we can reject the null hypothesis. There is strong evidence that there is an association between the proportion of times I eat at Pomona each week and if I am eating meat.
 
-Though it did feel like not eating meat caused me to eat at Pomona less, this permutation test cannot tell us if there is a causal link between these two variables. There was no random assignment for the weeks that I was eating meat and when I was not. Thus, other factors could have contributed to me eating at Pomona less my sophomore year. For example, our first year, Neha refused to eat off-campus, and so I ate at Pomona more my first year when I happened to be eating meat. I also took classes at other 5Cs my sophomore fall, which may have made eating at non-Pomona dining halls more convenient when I also happened to not be eating meat.
+**Conclusion**
 
-Though there is a negative association between how frequently I eat at Pomona each week and me not eating meat, because we cannot claim causal influence, and because I am just one person, I think more students need to collect their own data about their dining hall habits before it makes sense to make any claims about how easy it is to avoid eating meat at Pomona.
+Assuming that there is no association between the proportion of times I eat at Pomona per week and whether or not I am eating meat, I simulated 1000 versions of myself that ate meat for 37 weeks and did not eat meat for 29 weeks, and I compared these simulations to the observed data. I found strong evidence that there is an association between the proportion of times I eat at Pomona each week and if I am eating meat.
+
+Though it did feel like not eating meat caused me to eat at Pomona less, this permutation test cannot tell us if there is a causal link between these two variables. There was no random assignment for the weeks that I was eating meat and when I was not. Thus, other factors could have contributed to me eating at Pomona less my sophomore year. For example, our first year, Neha refused to eat off-campus, and so I ate at Pomona more my first year for reasons unrelated to eating meat. I also took classes at other 5Cs my sophomore fall, which may have made eating at non-Pomona dining halls more convenient.
+
+Though there is an association, because we cannot claim causal influence, and because I am just one person, I do not think this analysis alone allows me to make any claims about how easy it is to avoid eating meat at Pomona. Instead, my only claim is that everyone should take a philosophy class, and under absolutely no circumstance should anybody ever eat at Collins.
