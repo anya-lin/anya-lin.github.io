@@ -117,9 +117,9 @@ When I was eating meat, I on average ate at Pomona for 0.515 of my meals each we
 
 To see if this difference in proportions could have happened by random chance, I will run a permutation test where I will simulate 1000 versions of myself that are equally committed to protesting Claremont McKenna.
 
-My null hypothesis is that there is no association between the proportion of times I eat at Pomona each week and whether or not I am eating meat.
+My null hypothesis is that there is no association between the proportion of times I eat at Pomona each week and whether or not I am eating meat. My alternative hypothesis is that there is an association between the proportion of times I eat at Pomona each week and whether or not I am eating meat.
 
-I shuffle the data to create a null sampling distribution:
+First, I wrote a permute_data() function that will simulate one version of me. I previously calculated the proportion of meals I ate on Pomona each week for 66 weeks. This function will randomly assign 37 of these weeks to be weeks where I was eating meat and 29 of these to be weeks where I was not eating meat.
 
 ```{r}
 permute_data <- function(rep, data) {
@@ -135,7 +135,11 @@ permute_data <- function(rep, data) {
       permute_ave_diff = diff(permute_ave),
     )
 }
+```
 
+Next, since I want to simulate many different versions of me, the following code uses the map() function to execute the above permute_data() function 1000 times. I then graph the results of the simulation.
+
+```{r}
 set.seed(16)
 permute_stats <-
   map(c(1:1000), permute_data, data = semi_clean_dh_no_summer) |>
@@ -151,7 +155,7 @@ permute_stats |>
 
 ```
 
-This distribution shows the average difference in the proportion of times I ate at Pomona for when I was eating meat and when I was not, if there were no association between the proportion of times I ate at Pomona each week and whether or not I was eating meat. The aqua line represents the actual observed difference in proportion (-0.0917). As we can see, very few of the 1000 simulations produced data more extreme than the observed difference. We can calculate the p-value for the observed data:
+This distribution shows the average difference in the proportion of times I ate at Pomona for when I was eating meat and when I was not, if there were no association between the proportion of times I ate at Pomona each week and whether or not I was eating meat. The aqua line represents the actual observed difference in proportion (-0.0917). As we can see by how short the bars to the left of the line are, very few of the 1000 simulations produced data more extreme than the observed difference. We can calculate the p-value for the observed data:
 
 ```{r}
 permute_stats |>
