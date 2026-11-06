@@ -8,7 +8,7 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - project2.qmd
       - project3.qmd
       - text: Data Viz
         menu:
