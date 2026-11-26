@@ -10,6 +10,7 @@ website:
         text: Home
       - project2.qmd
       - project3.qmd
+      - project4.qmd
       - text: Data Viz
         menu:
           - href: tidy1.qmd
